@@ -1,5 +1,5 @@
 // ❗ You don't need to add extra action creators to achieve MVP
-import { MOVE_CLOCKWISE, MOVE_COUNTERCLOCKWISE, SET_QUIZ_INTO_STATE } from "./action-types";
+import { MOVE_CLOCKWISE, MOVE_COUNTERCLOCKWISE, SET_QUIZ_INTO_STATE, RESET_QUIZ_STATE } from "./action-types";
 import axios from "axios";
 
 export function moveClockwise(id) {
@@ -18,6 +18,10 @@ export function setQuiz(quiz) {
   return({type: SET_QUIZ_INTO_STATE, payload: quiz})
 }
 
+export function resetQuiz() {
+  return({type: RESET_QUIZ_STATE})
+}
+
 export function inputChange() { }
 
 export function resetForm() { }
@@ -25,7 +29,7 @@ export function resetForm() { }
 // ❗ Async action creators
 export function fetchQuiz() {
   return function (dispatch) {
-
+    dispatch(resetQuiz());
     axios.get("http://localhost:9000/api/quiz/next")
       .then(res => {
         dispatch(setQuiz(res.data))
