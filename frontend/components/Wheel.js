@@ -17,12 +17,17 @@ const Wheel = (props) => {
   return (
     <div id="wrapper">
       <div id="wheel">
-        <div className="cog active" style={{ "--i": 0 }}>B</div>
+      {[0, 1, 2, 3, 4, 5].map(idx => (
+            <div key={idx} className={`cog${idx === wheel ? ' active' : ''}`} style={{ "--i": idx }}>
+              {idx === wheel ? 'B' : null}
+            </div>
+          ))}
+        {/* <div className="cog active" style={{ "--i": 0 }}>B</div>
         <div className="cog" style={{ "--i": 1 }}></div>
         <div className="cog" style={{ "--i": 2 }}></div>
         <div className="cog" style={{ "--i": 3 }}></div>
         <div className="cog" style={{ "--i": 4 }}></div>
-        <div className="cog" style={{ "--i": 5 }}></div>{/* --i is a custom CSS property, no need to touch that nor the style object */}
+        <div className="cog" style={{ "--i": 5 }}></div> // --i is a custom CSS property, no need to touch that nor the style object */}
       </div>
       <div id="keypad">
         <button id="counterClockwiseBtn" onClick={counterClockwise}>Counter clockwise</button>

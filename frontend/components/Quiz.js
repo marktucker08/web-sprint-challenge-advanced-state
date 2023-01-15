@@ -13,13 +13,13 @@ export function Quiz(props) {
     const selectAnswer = (evt) => {
       if(evt.target.textContent = "Select") {
         evt.target.textContent = "SELECTED";
-        const selected = true;
+        const selectAnswer = true;
       }
       const answerDiv = evt.target.parent
       parent.classList.add("selected");
       
         const button = document.querySelector("#submitAnswerBtn");
-        button.disabled = false;
+        button.enabled = true;
     }
 
   return (
@@ -40,7 +40,7 @@ export function Quiz(props) {
 
               <div className="answer">
               {quiz.answers[1].text}
-                <button>
+                <button onClick={selectAnswer}>
                   Select
                 </button>
               </div>
