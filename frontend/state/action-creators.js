@@ -1,5 +1,5 @@
 // ❗ You don't need to add extra action creators to achieve MVP
-import { MOVE_CLOCKWISE, MOVE_COUNTERCLOCKWISE, SET_QUIZ_INTO_STATE, RESET_QUIZ_STATE, SET_SELECTED_ANSWER, SET_INFO_MESSAGE, RESET_ANSWER_STATE } from "./action-types";
+import { MOVE_CLOCKWISE, MOVE_COUNTERCLOCKWISE, SET_QUIZ_INTO_STATE, RESET_QUIZ_STATE, SET_SELECTED_ANSWER, SET_INFO_MESSAGE, RESET_ANSWER_STATE, INPUT_CHANGE, RESET_FORM } from "./action-types";
 import axios from "axios";
 
 export function moveClockwise(id) {
@@ -12,7 +12,6 @@ export function moveCounterClockwise(id) {
 
 export function selectAnswer(answer) { 
   return({type: SET_SELECTED_ANSWER, payload: answer})
-  
 }
 
 export function setMessage(message) { 
@@ -31,9 +30,13 @@ export function resetAnswer() {
   return ({type: RESET_ANSWER_STATE})
 }
 
-export function inputChange() { }
+export function inputChange(value, id) { 
+  return({type: INPUT_CHANGE, id: id, payload: value})
+}
 
-export function resetForm() { }
+export function resetForm() { 
+  return({type: RESET_FORM})
+}
 
 // ❗ Async action creators
 export function fetchQuiz() {
@@ -67,8 +70,18 @@ export function postAnswer(quiz, answer) {
     // - Dispatch the fetching of the next quiz
   }
 }
-export function postQuiz() {
+export function postQuiz(formValues) {
   return function (dispatch) {
+    axios.post("http://localhost:9000/api/quiz/new", { "question_text": "Love JS?", "true_answer_text": "yes", "false_answer_text": "nah" })
+    .then(res => {
+      console.log(res.data)
+      // dispatch(setMessage(res.data))
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    
+    // dispatch(resetForm())
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form

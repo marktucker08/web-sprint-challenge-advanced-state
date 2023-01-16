@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { fetchQuiz, selectAnswer, postAnswer } from '../state/action-creators';
 import { connect } from 'react-redux';
 
@@ -6,20 +6,17 @@ import { connect } from 'react-redux';
 export function Quiz(props) {
   const { quiz, selectedAnswer, fetchQuiz, selectAnswer, postAnswer } = props;
 
+    const [disabled, setDisabled] = useState(true);
+
     useEffect(() => {
       fetchQuiz()
     }, [])
+    
+
 
     const handleSelect = (answer) => {
-      // if(evt.target.textContent = "Select") {
-      //   evt.target.textContent = "SELECTED";
-      // }
-  
       selectAnswer(answer)
-      
-      // const answerDiv = evt.target.parent
-      // parent.classList.add("selected");
-      
+      setDisabled(false);
         // const button = document.querySelector("#submitAnswerBtn");
         // button.enabled = true;
     }
@@ -27,6 +24,7 @@ export function Quiz(props) {
     const submitAnswer = (quiz, answer) => {
       console.log(quiz, answer);
       postAnswer(quiz, answer);
+      setDisabled(true);
       // evt.target.disabled;
     }
 
@@ -62,7 +60,7 @@ export function Quiz(props) {
               </div> */}
             </div>
 
-            <button id="submitAnswerBtn" onClick={() => submitAnswer(quiz.quiz_id, selectedAnswer.answer_id)}>Submit answer</button>
+            <button id="submitAnswerBtn" disabled={disabled} onClick={() => submitAnswer(quiz.quiz_id, selectedAnswer.answer_id)}>Submit answer</button>
           </>
         ) : <div className="loading" > Loading next quiz... </div>
       }
