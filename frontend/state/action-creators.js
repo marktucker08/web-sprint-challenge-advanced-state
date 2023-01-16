@@ -1,5 +1,5 @@
 // ❗ You don't need to add extra action creators to achieve MVP
-import { MOVE_CLOCKWISE, MOVE_COUNTERCLOCKWISE, SET_QUIZ_INTO_STATE, RESET_QUIZ_STATE, SET_SELECTED_ANSWER } from "./action-types";
+import { MOVE_CLOCKWISE, MOVE_COUNTERCLOCKWISE, SET_QUIZ_INTO_STATE, RESET_QUIZ_STATE, SET_SELECTED_ANSWER, SET_INFO_MESSAGE, RESET_ANSWER_STATE } from "./action-types";
 import axios from "axios";
 
 export function moveClockwise(id) {
@@ -15,7 +15,9 @@ export function selectAnswer(answer) {
   
 }
 
-export function setMessage() { }
+export function setMessage(message) { 
+  return({type: SET_INFO_MESSAGE, payload: message})
+}
 
 export function setQuiz(quiz) { 
   return({type: SET_QUIZ_INTO_STATE, payload: quiz})
@@ -23,6 +25,10 @@ export function setQuiz(quiz) {
 
 export function resetQuiz() {
   return({type: RESET_QUIZ_STATE})
+}
+
+export function resetAnswer() {
+  return ({type: RESET_ANSWER_STATE})
 }
 
 export function inputChange() { }
@@ -44,11 +50,16 @@ export function fetchQuiz() {
     // - Dispatch an action to send the obtained quiz to its state
   }
 }
-export function postAnswer(quiz) {
+export function postAnswer(quiz, answer) {
   return function (dispatch) {
-    axios.post("http://localhost:9000/api/quiz/answer", `{ "quiz_id": ${quiz.quiz_id}, "answer_id": ${quiz.answers[0].answer_id} }`)
+    axios.post("http://localhost:9000/api/quiz/answer", { "quiz_id": quiz, "answer_id": answer })
     .then(res => {
-      console.log(res.data)
+      dispatch(resetAnswer())
+      dispatch(setMessage(res.data))
+      dispatch(fetchQuiz())
+    })
+    .catch(err => {
+      console.log(err)
     })
     // On successful POST:
     // - Dispatch an action to reset the selected answer state
