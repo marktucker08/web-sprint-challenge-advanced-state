@@ -8,24 +8,23 @@ export function Quiz(props) {
 
     const [disabled, setDisabled] = useState(true);
 
-    useEffect(() => {
-      fetchQuiz()
-    }, [])
-    
+  if (quiz.quiz_id === null) {
+    fetchQuiz()
+  }
 
+  // useEffect(() => {
+  //   fetchQuiz()
+  // }, [])
 
     const handleSelect = (answer) => {
       selectAnswer(answer)
       setDisabled(false);
-        // const button = document.querySelector("#submitAnswerBtn");
-        // button.enabled = true;
     }
 
     const submitAnswer = (quiz, answer) => {
       console.log(quiz, answer);
       postAnswer(quiz, answer);
       setDisabled(true);
-      // evt.target.disabled;
     }
 
   return (

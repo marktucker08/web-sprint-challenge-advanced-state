@@ -58,7 +58,7 @@ export function postAnswer(quiz, answer) {
     axios.post("http://localhost:9000/api/quiz/answer", { "quiz_id": quiz, "answer_id": answer })
     .then(res => {
       dispatch(resetAnswer())
-      dispatch(setMessage(res.data))
+      dispatch(setMessage(res.data.message))
       dispatch(fetchQuiz())
     })
     .catch(err => {
@@ -72,16 +72,17 @@ export function postAnswer(quiz, answer) {
 }
 export function postQuiz(formValues) {
   return function (dispatch) {
-    axios.post("http://localhost:9000/api/quiz/new", { "question_text": "Love JS?", "true_answer_text": "yes", "false_answer_text": "nah" })
+    axios.post("http://localhost:9000/api/quiz/new", { "question_text": formValues.newQuestion, "true_answer_text": formValues.newTrueAnswer, "false_answer_text": formValues.newFalseAnswer })
     .then(res => {
-      console.log(res.data)
-      // dispatch(setMessage(res.data))
+      console.log(res)
+      dispatch(setMessage(`Congrats: "${res.data.question}" is a great question!` ))
+      dispatch(resetForm())
     })
     .catch(err => {
       console.log(err)
     })
     
-    // dispatch(resetForm())
+    
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form
