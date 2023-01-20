@@ -5,19 +5,28 @@ import * as Yup from 'yup';
 
 export function Form(props) {
 
-  const [disabled, setDisabled] = useState(true);
+  const { form } = props;
 
-  const formSchema = Yup.object().shape({
-    newQuestion: Yup
-      .string()
-      .required("Question Required!"),
-    newTrueAnswer: Yup
-      .string()
-      .required("True Answer Required!"),
-    newFalseAnswer: Yup
-      .string()
-      .required("False Answer Required!")
-  });
+  // const [disabled, setDisabled] = useState(true);
+
+  // const formSchema = Yup.object().shape({
+  //   newQuestion: Yup
+  //     .string()
+  //     .required("Question Required!"),
+  //   newTrueAnswer: Yup
+  //     .string()
+  //     .required("True Answer Required!"),
+  //   newFalseAnswer: Yup
+  //     .string()
+  //     .required("False Answer Required!")
+  // });
+
+  const setDisabled = () => {
+    if (form.newQuestion.trim().length > 0 && form.newTrueAnswer.trim().length > 0 && form.newFalseAnswer.trim().length > 0) {
+      return false;
+    }
+    return true;
+  }
 
   const onChange = evt => {
     const { value, id } = evt.target
@@ -29,9 +38,9 @@ export function Form(props) {
     props.postQuiz(props.form);
   }
 
-  useEffect(() => {
-    formSchema.isValid(props.form).then(valid => setDisabled(!valid))
-  }, [props.form])
+  // useEffect(() => {
+  //   formSchema.isValid(props.form).then(valid => setDisabled(!valid))
+  // }, [props.form])
 
 
   return (
@@ -40,7 +49,7 @@ export function Form(props) {
       <input maxLength={50} onChange={onChange} id="newQuestion" placeholder="Enter question" value={props.form.newQuestion}/>
       <input maxLength={50} onChange={onChange} id="newTrueAnswer" placeholder="Enter true answer" value={props.form.newTrueAnswer}/>
       <input maxLength={50} onChange={onChange} id="newFalseAnswer" placeholder="Enter false answer" value={props.form.newFalseAnswer}/>
-      <button id="submitNewQuizBtn" disabled={disabled}>Submit new quiz</button>
+      <button id="submitNewQuizBtn" disabled={setDisabled()}>Submit new quiz</button>
     </form>
   )
 }

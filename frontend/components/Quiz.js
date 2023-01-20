@@ -8,13 +8,15 @@ export function Quiz(props) {
 
     const [disabled, setDisabled] = useState(true);
 
-  if (quiz.quiz_id === null) {
-    fetchQuiz()
-  }
-
-  // useEffect(() => {
+  // if (quiz.quiz_id === null) {
   //   fetchQuiz()
-  // }, [])
+  // }
+
+  useEffect(() => {
+    if (quiz.quiz_id === null) {
+      fetchQuiz()
+    }
+  }, [quiz.quiz_id])
 
     const handleSelect = (answer) => {
       selectAnswer(answer)
